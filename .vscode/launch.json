@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-IntelligentExamSystemApplication<intelligent-exam-system>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.examsystem.intelligent_exam_system.IntelligentExamSystemApplication",
+            "projectName": "intelligent-exam-system",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
