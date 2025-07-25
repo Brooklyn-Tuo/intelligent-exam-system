@@ -65,39 +65,6 @@ public class User {
     public User() {
     }
 
-    // ------------------- 自动回调方法 -------------------
-    /**
-     * 持久化前自动设置时间戳
-     */
-    @PrePersist
-    protected void onCreate() {
-        LocalDateTime now = LocalDateTime.now();
-        this.createdAt = now;
-        this.updatedAt = now;
-    }
-
-    /**
-     * 更新前自动更新时间戳
-     */
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
-    // ------------------- 枚举定义 -------------------
-    /**
-     * 用户角色枚举
-     */
-    public enum Role {
-        STUDENT, // 学生
-        TEACHER, // 教师
-        ADMIN // 管理员
-    }
-
-    // ------------------- Getter/Setter -------------------
-    // 以下方法可通过VS Code右键菜单生成：
-    // 右键 → Source Action → Generate Getters and Setters
-
     public Long getId() {
         return id;
     }
@@ -114,5 +81,102 @@ public class User {
         this.username = username;
     }
 
-    // ... 其他getter/setter省略（建议全部生成）...
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+    }
+
+    public String getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public Boolean getIsFirstLogin() {
+        return isFirstLogin;
+    }
+
+    public void setIsFirstLogin(Boolean isFirstLogin) {
+        this.isFirstLogin = isFirstLogin;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
