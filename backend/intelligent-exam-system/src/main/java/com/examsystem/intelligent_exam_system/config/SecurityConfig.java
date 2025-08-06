@@ -14,20 +14,23 @@ public class SecurityConfig {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        // 🔐 这是密码加密的核心！
         return new BCryptPasswordEncoder();
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/auth/**", "/api/test/**")) // 忽略特定接口的CSRF保护
+                .cors().and() // ✅ 添加 CORS 允许跨域
+                .csrf(csrf -> csrf.ignoringRequestMatchers("/api/auth/**", "/api/test/**"))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**").permitAll() // 允许认证相关接口
-                        .requestMatchers("/api/test/**").permitAll() // 允许测试接口
-                        .anyRequest().authenticated() // 其他接口需要认证
-                );
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/test/**").permitAll()
+                        .requestMatchers("/api/users/**").permitAll()
+                        .anyRequest().authenticated()
+                )
+                .httpBasic().disable(); // ✅ 可选：禁用默认弹窗认证
 
         return http.build();
     }
+
 }

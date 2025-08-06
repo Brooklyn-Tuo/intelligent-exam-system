@@ -15,6 +15,8 @@ public class JwtUtil {
 
     // 🔑 JWT密钥 (实际项目中应该放在配置文件中)
     private final String SECRET_KEY = "mySecretKeyForExamSystemThatIsLongEnoughForHS256Algorithm";
+//  private final String SECRET_KEY = "mySecretKeyForExamSystemThatIsLongEnoughForHS256Algorithm";
+
 
     // 使用SecretKey而不是Key，并从SECRET_KEY字符串生成
     private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
@@ -58,6 +60,7 @@ public class JwtUtil {
     }
 
     // 提取特定声明
+
     public <T> T extractClaim(String token, java.util.function.Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -73,7 +76,9 @@ public class JwtUtil {
                     .getBody();
         } catch (JwtException e) {
             throw new RuntimeException("Invalid JWT token", e);
+
         }
+
     }
 
     // 检查Token是否过期

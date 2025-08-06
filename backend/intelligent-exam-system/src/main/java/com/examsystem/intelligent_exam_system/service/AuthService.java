@@ -8,6 +8,7 @@ import com.examsystem.intelligent_exam_system.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.examsystem.intelligent_exam_system.dto.ChangePasswordRequest;
 
 import java.util.Optional;
 
@@ -39,10 +40,12 @@ public class AuthService {
                 return new LoginResponse(false, "密码错误");
             }
 
-            // 3. 检查是否首次登录
-            if (user.getIsFirstLogin()) {
-                return new LoginResponse(false, "FIRST_LOGIN_REQUIRED");
-            }
+//            // 3. 检查是否首次登录
+//            if (user.getIsFirstLogin()) {
+//                return new LoginResponse(false, "FIRST_LOGIN_REQUIRED");
+//            }
+            // 取消首次登录检查,在前端判断是否需要修改密码
+
 
             // 4. 生成JWT Token
             String token = jwtUtil.generateToken(
@@ -77,7 +80,7 @@ public class AuthService {
 
             User user = userOptional.get();
 
-            // 更新密码和首次登录标志
+            // 更新密码并取消首次登录标记
             user.setPassword(passwordEncoder.encode(newPassword));
             user.setIsFirstLogin(false);
             userRepository.save(user);
@@ -88,4 +91,28 @@ public class AuthService {
             return new LoginResponse(false, "密码修改失败：" + e.getMessage());
         }
     }
+
+
+
+    // 修改密码（登陆后修改密码，用于用户登陆后随时修改密码）
+    public LoginResponse changePassword(String username, String oldPassword, String newPassword) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        if (optionalUser.isEmpty()) {
+            return new LoginResponse(false, "用户不存在");
+        }
+
+        User user = optionalUser.get();
+
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            return new LoginResponse(false, "旧密码错误");
+        }
+
+        // 修改密码并保存
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+
+        return new LoginResponse(true, "密码修改成功");
+    }
+
 }
